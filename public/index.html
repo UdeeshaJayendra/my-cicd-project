@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CI/CD Pipeline Dashboard</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:#0d1117;color:#e6edf3;font-family:monospace;padding:24px}
+    .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid #21262d}
+    .logo{font-size:20px;font-weight:500;color:#58a6ff}
+    .badge{background:#1f6feb33;color:#58a6ff;border:1px solid #1f6feb;padding:4px 12px;border-radius:20px;font-size:12px}
+    .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+    .metric{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:16px}
+    .metric-label{font-size:11px;color:#8b949e;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
+    .metric-value{font-size:22px;font-weight:500}
+    .green{color:#3fb950}
+    .blue{color:#58a6ff}
+    .purple{color:#bc8cff}
+    .section{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:20px;margin-bottom:24px}
+    .section-title{font-size:11px;color:#8b949e;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}
+    .stages{display:flex;align-items:center;gap:0}
+    .stage{background:#0d1117;border:1px solid #21262d;border-radius:6px;padding:12px 16px;flex:1;text-align:center}
+    .stage-name{font-size:11px;color:#8b949e;margin-bottom:4px}
+    .stage-status{font-size:13px;font-weight:500;color:#3fb950}
+    .arrow{width:28px;height:2px;background:#21262d;flex-shrink:0}
+    .endpoints{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+    .endpoint{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:16px}
+    .method{background:#1f6feb33;color:#58a6ff;border:1px solid #1f6feb;padding:2px 8px;border-radius:4px;font-size:11px;margin-right:8px}
+    .path{color:#e6edf3;font-size:13px}
+    .response{color:#3fb950;font-size:12px;margin-top:10px}
+    .log-line{font-size:12px;padding:6px 0;border-bottom:1px solid #21262d22;display:flex;gap:16px}
+    .log-time{color:#484f58;min-width:40px}
+    .log-msg{color:#3fb950}
+    .uptime{color:#8b949e;font-size:12px;margin-top:8px}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+    .live-dot{width:8px;height:8px;background:#3fb950;border-radius:50%;display:inline-block;margin-right:8px;animation:pulse 2s infinite}
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">CI/CD Pipeline Dashboard</div>
+    <div class="badge"><span class="live-dot"></span>LIVE</div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="metric-label">Pipeline status</div>
+      <div class="metric-value green" id="status">Loading...</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Tests passing</div>
+      <div class="metric-value green" id="tests">-</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">App uptime</div>
+      <div class="metric-value blue" id="uptime">-</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Docker image</div>
+      <div class="metric-value purple">Pushed</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Pipeline stages</div>
+    <div class="stages" id="stages">Loading...</div>
+  </div>
+
+  <div class="endpoints">
+    <div class="endpoint">
+      <div><span class="method">GET</span><span class="path">/api</span></div>
+      <div class="response" id="api-response">Loading...</div>
+    </div>
+    <div class="endpoint">
+      <div><span class="method">GET</span><span class="path">/api/health</span></div>
+      <div class="response" id="health-response">Loading...</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Pipeline log</div>
+    <div id="logs">
+      <div class="log-line"><span class="log-time">00:01</span><span class="log-msg">✓ Checkout code complete</span></div>
+      <div class="log-line"><span class="log-time">00:12</span><span class="log-msg">✓ Node.js 18 setup complete</span></div>
+      <div class="log-line"><span class="log-time">00:18</span><span class="log-msg">✓ npm install complete</span></div>
+      <div class="log-line"><span class="log-time">00:24</span><span class="log-msg">✓ All tests passed (2/2)</span></div>
+      <div class="log-line"><span class="log-time">00:31</span><span class="log-msg">✓ Docker image built successfully</span></div>
+      <div class="log-line"><span class="log-time">00:45</span><span class="log-msg">✓ Pushed to Docker Hub successfully</span></div>
+    </div>
+  </div>
+
+  <script>
+    async function load() {
+      try {
+        const p = await fetch("/api/pipeline").then(r => r.json());
+        document.getElementById("status").textContent = p.status === "passing" ? "Passing" : "Failing";
+        document.getElementById("tests").textContent = p.tests.passed + " / " + (p.tests.passed + p.tests.failed);
+        const stagesEl = document.getElementById("stages");
+        stagesEl.innerHTML = p.stages.map((s, i) =>
+          `${i > 0 ? '<div class="arrow"></div>' : ''}
+           <div class="stage">
+             <div class="stage-name">${s.name}</div>
+             <div class="stage-status">✓ done</div>
+           </div>`
+        ).join("");
+      } catch(e) {}
+
+      try {
+        const h = await fetch("/api/health").then(r => r.json());
+        document.getElementById("uptime").textContent = h.uptime;
+        document.getElementById("health-response").textContent = JSON.stringify(h);
+      } catch(e) {}
+
+      try {
+        const a = await fetch("/api").then(r => r.json());
+        document.getElementById("api-response").textContent = JSON.stringify(a);
+      } catch(e) {}
+    }
+
+    load();
+    setInterval(load, 5000);
+  </script>
+</body>
+</html>
