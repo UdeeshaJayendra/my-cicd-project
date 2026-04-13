@@ -1,0 +1,29 @@
+{
+  "name": "cd-my-cicd-project",
+  "version": "1.0.0",
+  "description": "\"# My CI/CD Project\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UdeeshaJayendra/my-cicd-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/UdeeshaJayendra/my-cicd-project/issues"
+  },
+  "homepage": "https://github.com/UdeeshaJayendra/my-cicd-project#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "jest": "^30.3.0",
+    "supertest": "^7.2.2"
+  }
+}
