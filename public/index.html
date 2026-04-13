@@ -3,123 +3,228 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CI/CD Pipeline Dashboard</title>
+  <title>Udeesha Jayendra</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
-    body{background:#0d1117;color:#e6edf3;font-family:monospace;padding:24px}
-    .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid #21262d}
-    .logo{font-size:20px;font-weight:500;color:#58a6ff}
-    .badge{background:#1f6feb33;color:#58a6ff;border:1px solid #1f6feb;padding:4px 12px;border-radius:20px;font-size:12px}
-    .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
-    .metric{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:16px}
-    .metric-label{font-size:11px;color:#8b949e;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
-    .metric-value{font-size:22px;font-weight:500}
-    .green{color:#3fb950}
-    .blue{color:#58a6ff}
-    .purple{color:#bc8cff}
-    .section{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:20px;margin-bottom:24px}
-    .section-title{font-size:11px;color:#8b949e;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}
-    .stages{display:flex;align-items:center;gap:0}
-    .stage{background:#0d1117;border:1px solid #21262d;border-radius:6px;padding:12px 16px;flex:1;text-align:center}
+    body{background:#0d1117;color:#e6edf3;font-family:monospace;min-height:100vh}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:20px 40px;border-bottom:1px solid #21262d}
+    .nav-logo{color:#58a6ff;font-size:16px;font-weight:500}
+    .nav-links{display:flex;gap:24px}
+    .nav-links a{color:#8b949e;font-size:13px;text-decoration:none}
+    .nav-links a:hover{color:#e6edf3}
+    .hero{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 40px;text-align:center;border-bottom:1px solid #21262d}
+    .avatar{width:90px;height:90px;border-radius:50%;background:#1f6feb33;border:2px solid #1f6feb;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:500;color:#58a6ff;margin-bottom:24px}
+    .hero-name{font-size:32px;font-weight:500;color:#e6edf3;margin-bottom:8px}
+    .hero-title{font-size:14px;color:#58a6ff;margin-bottom:16px;letter-spacing:2px;text-transform:uppercase}
+    .hero-bio{font-size:14px;color:#8b949e;max-width:480px;line-height:1.8;margin-bottom:32px}
+    .hero-btns{display:flex;gap:12px}
+    .btn-primary{background:#1f6feb;color:#fff;border:none;padding:10px 24px;border-radius:6px;font-size:13px;cursor:pointer;text-decoration:none;font-family:monospace}
+    .btn-secondary{background:transparent;color:#58a6ff;border:1px solid #1f6feb;padding:10px 24px;border-radius:6px;font-size:13px;cursor:pointer;text-decoration:none;font-family:monospace}
+    .btn-primary:hover{background:#388bfd}
+    .btn-secondary:hover{background:#1f6feb22}
+    .section{padding:60px 40px;max-width:900px;margin:0 auto}
+    .section-title{font-size:11px;color:#8b949e;text-transform:uppercase;letter-spacing:2px;margin-bottom:32px;padding-bottom:12px;border-bottom:1px solid #21262d}
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:48px}
+    .skill-card{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:16px;text-align:center}
+    .skill-icon{font-size:24px;margin-bottom:8px}
+    .skill-name{font-size:13px;color:#e6edf3;font-weight:500;margin-bottom:4px}
+    .skill-level{font-size:11px;color:#3fb950;background:#3fb95015;padding:2px 8px;border-radius:20px}
+    .pipeline-section{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:24px;margin-bottom:48px}
+    .pipeline-title{font-size:13px;color:#8b949e;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}
+    .stages{display:flex;align-items:center;gap:0;margin-bottom:16px}
+    .stage{background:#0d1117;border:1px solid #21262d;border-radius:6px;padding:10px 14px;flex:1;text-align:center}
     .stage-name{font-size:11px;color:#8b949e;margin-bottom:4px}
-    .stage-status{font-size:13px;font-weight:500;color:#3fb950}
-    .arrow{width:28px;height:2px;background:#21262d;flex-shrink:0}
-    .endpoints{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
-    .endpoint{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:16px}
-    .method{background:#1f6feb33;color:#58a6ff;border:1px solid #1f6feb;padding:2px 8px;border-radius:4px;font-size:11px;margin-right:8px}
-    .path{color:#e6edf3;font-size:13px}
-    .response{color:#3fb950;font-size:12px;margin-top:10px}
-    .log-line{font-size:12px;padding:6px 0;border-bottom:1px solid #21262d22;display:flex;gap:16px}
-    .log-time{color:#484f58;min-width:40px}
-    .log-msg{color:#3fb950}
-    .uptime{color:#8b949e;font-size:12px;margin-top:8px}
+    .stage-status{font-size:12px;font-weight:500;color:#3fb950}
+    .arrow{width:24px;height:2px;background:#21262d;flex-shrink:0}
+    .pipeline-info{font-size:12px;color:#8b949e;line-height:1.8}
+    .pipeline-info span{color:#58a6ff}
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:48px}
+    .project-card{background:#161b22;border:1px solid #21262d;border-radius:8px;padding:20px}
+    .project-name{font-size:15px;font-weight:500;color:#58a6ff;margin-bottom:8px}
+    .project-desc{font-size:12px;color:#8b949e;line-height:1.7;margin-bottom:16px}
+    .project-tags{display:flex;flex-wrap:wrap;gap:6px}
+    .tag{background:#1f6feb22;color:#58a6ff;border:1px solid #1f6feb44;padding:2px 10px;border-radius:20px;font-size:11px}
+    .tag-green{background:#3fb95022;color:#3fb950;border:1px solid #3fb95044;padding:2px 10px;border-radius:20px;font-size:11px}
+    .tag-purple{background:#bc8cff22;color:#bc8cff;border:1px solid #bc8cff44;padding:2px 10px;border-radius:20px;font-size:11px}
+    .tag-orange{background:#d2992222;color:#d29922;border:1px solid #d2992244;padding:2px 10px;border-radius:20px;font-size:11px}
+    footer{text-align:center;padding:32px;border-top:1px solid #21262d;color:#484f58;font-size:12px}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-    .live-dot{width:8px;height:8px;background:#3fb950;border-radius:50%;display:inline-block;margin-right:8px;animation:pulse 2s infinite}
+    .live-dot{width:7px;height:7px;background:#3fb950;border-radius:50%;display:inline-block;margin-right:6px;animation:pulse 2s infinite}
   </style>
 </head>
 <body>
-  <div class="header">
-    <div class="logo">CI/CD Pipeline Dashboard</div>
-    <div class="badge"><span class="live-dot"></span>LIVE</div>
-  </div>
 
-  <div class="metrics">
-    <div class="metric">
-      <div class="metric-label">Pipeline status</div>
-      <div class="metric-value green" id="status">Loading...</div>
+  <nav>
+    <div class="nav-logo">UJ.dev</div>
+    <div class="nav-links">
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#pipeline">Pipeline</a>
     </div>
-    <div class="metric">
-      <div class="metric-label">Tests passing</div>
-      <div class="metric-value green" id="tests">-</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">App uptime</div>
-      <div class="metric-value blue" id="uptime">-</div>
-    </div>
-    <div class="metric">
-      <div class="metric-label">Docker image</div>
-      <div class="metric-value purple">Pushed</div>
-    </div>
-  </div>
+  </nav>
 
-  <div class="section">
-    <div class="section-title">Pipeline stages</div>
-    <div class="stages" id="stages">Loading...</div>
-  </div>
-
-  <div class="endpoints">
-    <div class="endpoint">
-      <div><span class="method">GET</span><span class="path">/api</span></div>
-      <div class="response" id="api-response">Loading...</div>
+  <div class="hero">
+    <div class="avatar">UJ</div>
+    <div class="hero-name">Udeesha Jayendra</div>
+    <div class="hero-title">Aspiring DevOps Engineer</div>
+    <div class="hero-bio">
+      Passionate about automation, infrastructure, and security.
+      Currently building real-world DevOps projects involving
+      CI/CD pipelines, Docker containers, Linux security tools,
+      and network analysis.
     </div>
-    <div class="endpoint">
-      <div><span class="method">GET</span><span class="path">/api/health</span></div>
-      <div class="response" id="health-response">Loading...</div>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="#skills" class="btn-secondary">My Skills</a>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title">Pipeline log</div>
-    <div id="logs">
-      <div class="log-line"><span class="log-time">00:01</span><span class="log-msg">✓ Checkout code complete</span></div>
-      <div class="log-line"><span class="log-time">00:12</span><span class="log-msg">✓ Node.js 18 setup complete</span></div>
-      <div class="log-line"><span class="log-time">00:18</span><span class="log-msg">✓ npm install complete</span></div>
-      <div class="log-line"><span class="log-time">00:24</span><span class="log-msg">✓ All tests passed (2/2)</span></div>
-      <div class="log-line"><span class="log-time">00:31</span><span class="log-msg">✓ Docker image built successfully</span></div>
-      <div class="log-line"><span class="log-time">00:45</span><span class="log-msg">✓ Pushed to Docker Hub successfully</span></div>
+
+    <div id="skills">
+      <div class="section-title">Skills</div>
+      <div class="skills-grid">
+        <div class="skill-card">
+          <div class="skill-icon">🐧</div>
+          <div class="skill-name">Linux</div>
+          <div class="skill-level">Learning</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">🔁</div>
+          <div class="skill-name">DevOps</div>
+          <div class="skill-level">Learning</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">🔒</div>
+          <div class="skill-name">Cybersecurity</div>
+          <div class="skill-level">Learning</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">🐳</div>
+          <div class="skill-name">Docker</div>
+          <div class="skill-level">Learning</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">🐙</div>
+          <div class="skill-name">Git & GitHub</div>
+          <div class="skill-level">Learning</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">⚡</div>
+          <div class="skill-name">GitHub Actions</div>
+          <div class="skill-level">Learning</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">📜</div>
+          <div class="skill-name">Bash Scripting</div>
+          <div class="skill-level">Learning</div>
+        </div>
+        <div class="skill-card">
+          <div class="skill-icon">🐍</div>
+          <div class="skill-name">Python</div>
+          <div class="skill-level">Learning</div>
+        </div>
+      </div>
     </div>
+
+    <div id="projects">
+      <div class="section-title">Projects</div>
+      <div class="projects-grid">
+
+        <div class="project-card">
+          <div class="project-name">CI/CD Pipeline</div>
+          <div class="project-desc">
+            Production-grade CI/CD pipeline that automatically
+            tests, builds and deploys a Docker image to Docker Hub
+            on every push using GitHub Actions.
+          </div>
+          <div class="project-tags">
+            <span class="tag">GitHub Actions</span>
+            <span class="tag-green">Docker</span>
+            <span class="tag">Node.js</span>
+            <span class="tag-green">Jest</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-name">SSH Auto Blocker</div>
+          <div class="project-desc">
+            Linux security tool that detects repeated failed SSH
+            login attempts and automatically blocks suspicious IPs
+            using iptables firewall rules.
+          </div>
+          <div class="project-tags">
+            <span class="tag-purple">Cybersecurity</span>
+            <span class="tag">Bash</span>
+            <span class="tag">Linux</span>
+            <span class="tag-purple">iptables</span>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-name">Network Traffic Analyser</div>
+          <div class="project-desc">
+            Python tool that analyses PCAP network capture files,
+            detects anomalies and suspicious traffic patterns,
+            and provides actionable security recommendations.
+          </div>
+          <div class="project-tags">
+            <span class="tag-orange">Python</span>
+            <span class="tag">Linux</span>
+            <span class="tag-purple">Cybersecurity</span>
+            <span class="tag-orange">PCAP</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="pipeline">
+      <div class="section-title">Live pipeline status</div>
+      <div class="pipeline-section">
+        <div class="pipeline-title">
+          <span class="live-dot"></span>
+          My First CI Pipeline
+        </div>
+        <div class="stages">
+          <div class="stage"><div class="stage-name">Source</div><div class="stage-status">✓ done</div></div>
+          <div class="arrow"></div>
+          <div class="stage"><div class="stage-name">Install</div><div class="stage-status">✓ done</div></div>
+          <div class="arrow"></div>
+          <div class="stage"><div class="stage-name">Test</div><div class="stage-status">✓ done</div></div>
+          <div class="arrow"></div>
+          <div class="stage"><div class="stage-name">Build</div><div class="stage-status">✓ done</div></div>
+          <div class="arrow"></div>
+          <div class="stage"><div class="stage-name">Deploy</div><div class="stage-status">✓ done</div></div>
+        </div>
+        <div class="pipeline-info">
+          Tests passing: <span id="tests">-</span> &nbsp;|&nbsp;
+          Uptime: <span id="uptime">-</span> &nbsp;|&nbsp;
+          Image: <span>udeeshajayendra/my-cicd-app:latest</span>
+        </div>
+      </div>
+    </div>
+
   </div>
+
+  <footer>
+    Built with Node.js · Docker · GitHub Actions &nbsp;|&nbsp; Udeesha Jayendra 2026
+  </footer>
 
   <script>
     async function load() {
       try {
-        const p = await fetch("/api/pipeline").then(r => r.json());
-        document.getElementById("status").textContent = p.status === "passing" ? "Passing" : "Failing";
-        document.getElementById("tests").textContent = p.tests.passed + " / " + (p.tests.passed + p.tests.failed);
-        const stagesEl = document.getElementById("stages");
-        stagesEl.innerHTML = p.stages.map((s, i) =>
-          `${i > 0 ? '<div class="arrow"></div>' : ''}
-           <div class="stage">
-             <div class="stage-name">${s.name}</div>
-             <div class="stage-status">✓ done</div>
-           </div>`
-        ).join("");
-      } catch(e) {}
-
-      try {
         const h = await fetch("/api/health").then(r => r.json());
         document.getElementById("uptime").textContent = h.uptime;
-        document.getElementById("health-response").textContent = JSON.stringify(h);
       } catch(e) {}
-
       try {
-        const a = await fetch("/api").then(r => r.json());
-        document.getElementById("api-response").textContent = JSON.stringify(a);
+        const p = await fetch("/api/pipeline").then(r => r.json());
+        document.getElementById("tests").textContent = p.tests.passed + "/" + (p.tests.passed + p.tests.failed) + " passing";
       } catch(e) {}
     }
-
     load();
     setInterval(load, 5000);
   </script>
+
 </body>
 </html>
