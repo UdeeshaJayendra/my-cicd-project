@@ -26,7 +26,7 @@ https://udeeshajayendra-my-cicd-app.hf.space
 # Live Application
 <img width="1888" height="914" alt="1" src="https://github.com/user-attachments/assets/3fbbd2dd-a499-4684-a0b7-159f0768abc8" />
 
-# 📌 Project Overview
+#  Project Overview
 
 This project was built as part of my DevOps learning journey to gain hands-on experience with:
 
@@ -40,7 +40,7 @@ The application is automatically tested and containerized through a GitHub Actio
 
 ---
 
-# 🔁 CI/CD Pipeline
+#  CI/CD Pipeline
 
 Every time changes are pushed to the repository, GitHub Actions automatically performs the following steps:
 
@@ -82,7 +82,7 @@ Live Application
 
 ---
 
-# 🧪 Automated Testing
+#  Automated Testing
 
 The project uses automated tests to verify that important application functionality works correctly.
 
@@ -92,7 +92,7 @@ If the test stage fails, the workflow stops before the image is published.
 
 ---
 
-# 🐳 Docker
+#  Docker
 
 The application is containerized using Docker.
 
@@ -122,7 +122,7 @@ http://localhost:3000
 
 ---
 
-# 📦 Docker Hub
+#  Docker Hub
 
 The Docker image is automatically pushed to Docker Hub through GitHub Actions.
 
@@ -134,7 +134,7 @@ udeeshajayendra/my-cicd-app:latest
 
 ---
 
-# 🌐 Deployment
+#  Deployment
 
 The application is deployed using **Hugging Face Spaces**.
 
@@ -163,7 +163,7 @@ https://udeeshajayendra-my-cicd-app.hf.space
 
 ---
 
-# 📁 Project Structure
+#  Project Structure
 
 ```text
 my-cicd-project/
@@ -227,7 +227,7 @@ npm test
 
 ---
 
-# 📚 What I Learned
+#  What I Learned
 
 Through this project, I gained practical experience with:
 
@@ -241,7 +241,7 @@ Through this project, I gained practical experience with:
 
 ---
 
-# 🔮 Future Improvements
+#  Future Improvements
 
 Possible improvements for this project include:
 
@@ -255,7 +255,7 @@ Possible improvements for this project include:
 
 ---
 
-# 👨‍💻 Author
+# Author
 
 **Udeesha Jayendra**
 
