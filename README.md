@@ -11,7 +11,7 @@ https://udeeshajayendra-my-cicd-app.hf.space
 
 # Screenshots
 
- GitHub Actions CI/CD pipeline workflow
+# GitHub Actions CI/CD pipeline workflow
 <img width="1866" height="564" alt="1 1" src="https://github.com/user-attachments/assets/d04cc40f-0b52-447c-9f5c-a45c003eaede" />
 
 # GitHub Actions workflow run history
