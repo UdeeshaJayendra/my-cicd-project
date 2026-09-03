@@ -1,6 +1,6 @@
 # CI/CD Portfolio Application
 
-A simple Node.js portfolio application demonstrating a complete **CI/CD workflow** using GitHub Actions, Docker, Docker Hub, automated testing, and Hugging Face Spaces.
+A simple Node.js portfolio application demonstrating a complete **CI/CD workflow** using GitHub Actions, Docker, Docker Hub, automated testing, and Hugging Face Spaces
 
 ## 🌐 Live Demo
 
